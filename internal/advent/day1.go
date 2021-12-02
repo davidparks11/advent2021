@@ -4,48 +4,21 @@ import (
 	"strconv"
 )
 
-var _ Problem = &ReportRepair{}
+var _ Problem = &SonorSweep{}
 
-type ReportRepair struct {
+type SonorSweep struct {
 	dailyProblem
 }
 
-func (r *ReportRepair) Solve() {
+func (r *SonorSweep) Solve() {
 	r.day = 1
-	r.name = "Report Repair"
+	r.name = "Sonor Sweep"
 	input := IntsFromStrings(r.GetInputLines())
 	var results []string
-	results = append(results, strconv.Itoa(fixExpenseReport(input, 2020)))
-	results = append(results, strconv.Itoa(fixExpenseReportPart2(input)))
+	results = append(results, strconv.Itoa(countDepthIncreases(input)))
 	r.WriteResult(results)
 }
 
-func fixExpenseReport(input []int, target int) int {
-	expenses := make(map[int]bool, len(input))
-	for _, v := range input {
-		expenses[v] = true
-	}
-
-	for expense := range expenses {
-		complement := target - expense
-		if expenses[complement] {
-			return complement * expense
-		}
-	}
-	return 0
-}
-
-func fixExpenseReportPart2(input []int) int {
-	expenses := make(map[int]bool, len(input))
-	for _, v := range input {
-		expenses[v] = true
-	}
-
-	for expense := range expenses {
-		complement := 2020 - expense
-		if fixedReport := fixExpenseReport(input, complement); fixedReport != 0 {
-			return fixedReport * expense
-		}
-	}
-	return 0
+func countDepthIncreases(input []int) int {
+	panic("not implemented")
 }
