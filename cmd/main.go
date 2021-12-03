@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/davidparks11/advent2021/internal/advent"
 )
@@ -12,7 +13,7 @@ import (
 //TODO Add usage
 
 var problems = []advent.Problem{
-	&advent.SonorSweep{},
+	advent.NewSonorSweep(1),
 }
 
 func main() {
@@ -34,11 +35,10 @@ func main() {
 
 	for _, p := range problems {
 		problemDay := p.Day()
-		log.Println(problemDay)
 		if day == 0 || problemDay == day {
 			result := p.Solve()
 			if printToConsole {
-				log.Printf("Result for Day %d:\n%v\n", problemDay, result)	
+				log.Printf("Result for Day %d: %v\n", problemDay, result)
 			} else {
 				WriteResult(result, problemDay)
 			}
@@ -47,19 +47,18 @@ func main() {
 }
 
 //WriteResult takes result as a string and writes/overwrites the content to a result.txt file
-func WriteResult(result string, day int) {
+func WriteResult(result []string, day int) {
 	fileName := fmt.Sprintf("resources/results/result%d.txt", day)
 	resultFile, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	_, err = resultFile.WriteString(result)
-	if err != nil {
+	if _, err = resultFile.WriteString(strings.Join(result, "\n")); err != nil {
 		log.Fatal(err)
 	}
 	
-	if err := resultFile.Close(); err != nil {
+	if err = resultFile.Close(); err != nil {
 		log.Fatal(err)
 	}
 }

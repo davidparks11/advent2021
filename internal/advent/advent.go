@@ -8,12 +8,12 @@ import (
 )
 
 type Problem interface {
-	Solve() string
+	Solve() []string
 	Day() int
 }
 
 type dailyProblem struct {
-	day  int
+	day int
 }
 
 func (d *dailyProblem) Day() int {

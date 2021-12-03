@@ -4,25 +4,25 @@ import (
 	"strconv"
 )
 
-var _ Problem = &SonorSweep{}
+var _ Problem = &sonorSweep{}
 
-type SonorSweep struct {
+type sonorSweep struct {
 	dailyProblem
 }
 
-func (r *SonorSweep) Solve() string {
-	r.day = 1
+func NewSonorSweep(day int) *sonorSweep {
+	return &sonorSweep{
+		dailyProblem{day: day},
+	}
+}
+
+func (r *sonorSweep) Solve() []string {
 	input := IntsFromStrings(r.GetInputLines())
 	var results []string
 	results = append(results, strconv.Itoa(countDepthIncreases(input)))
 	results = append(results, strconv.Itoa(count3WideDepthIncreases(input)))
 
-	resultMsg := string(results[0]) + "\n" 
-	if len(resultMsg) > 1 {
-		resultMsg += string(results[1])
-	}
-
-	return resultMsg 
+	return results
 }
 
 // The first order of business is to figure out how quickly the depth increases,
