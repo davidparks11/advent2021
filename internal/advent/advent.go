@@ -8,33 +8,16 @@ import (
 )
 
 type Problem interface {
-	Solve()
+	Solve() string
+	Day() int
 }
 
 type dailyProblem struct {
 	day  int
-	name string
 }
 
-//WriteResult takes result as a string and writes/overwrites the content to a result.txt file
-func (d *dailyProblem) WriteResult(results []string) {
-	fileName := fmt.Sprintf("resources/results/result%d.txt", d.day)
-	resultFile, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
-	if err != nil {
-		fmt.Sprintf(err.Error())
-		return
-	}
-
-	for i, result := range results {
-		fmt.Printf("Result for Day %d, the %s Problem, Part %d, : %v\n", d.day, d.name, i+1, result)
-		resultFile.WriteString(result + "\n")
-
-	}
-
-	if err := resultFile.Close(); err != nil {
-		fmt.Print(err.Error())
-		return
-	}
+func (d *dailyProblem) Day() int {
+	return d.day
 }
 
 //GetInputLines reads an input.txt file and returns its contents separated by lines as a string array
