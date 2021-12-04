@@ -14,6 +14,7 @@ import (
 
 var problems = []advent.Problem{
 	advent.NewSonorSweep(1),
+	advent.NewDive(2),
 }
 
 func main() {

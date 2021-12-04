@@ -10,17 +10,17 @@ type sonorSweep struct {
 	dailyProblem
 }
 
-func NewSonorSweep(day int) *sonorSweep {
+func NewSonorSweep(day int) Problem {
 	return &sonorSweep{
 		dailyProblem{day: day},
 	}
 }
 
-func (r *sonorSweep) Solve() []string {
-	input := IntsFromStrings(r.GetInputLines())
+func (s *sonorSweep) Solve() []string {
+	input := IntsFromStrings(s.GetInputLines())
 	var results []string
-	results = append(results, strconv.Itoa(countDepthIncreases(input)))
-	results = append(results, strconv.Itoa(count3WideDepthIncreases(input)))
+	results = append(results, strconv.Itoa(s.countDepthIncreases(input)))
+	results = append(results, strconv.Itoa(s.count3WideDepthIncreases(input)))
 
 	return results
 }
@@ -30,7 +30,7 @@ func (r *sonorSweep) Solve() []string {
 // get carried into deeper water by an ocean current or a fish or something.
 // To do this, count the number of times a depth measurement increases from the
 // previous measurement. (There is no measurement before the first measurement.)
-func countDepthIncreases(input []int) (increases int) {
+func (s *sonorSweep) countDepthIncreases(input []int) (increases int) {
 	if len(input) < 2 {
 		return //can't have an increase with one or zero elements
 	}
@@ -48,7 +48,7 @@ func countDepthIncreases(input []int) (increases int) {
 // sliding window increases from the previous sum. So, compare A with B, then
 // compare B with C, then C with D, and so on. Stop when there aren't enough
 // measurements left to create a new three-measurement sum.
-func count3WideDepthIncreases(input []int) (increases int) {
+func (s *sonorSweep) count3WideDepthIncreases(input []int) (increases int) {
 	if len(input) < 4 {
 		return //similar situation as above
 	}
