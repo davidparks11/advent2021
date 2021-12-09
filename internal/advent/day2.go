@@ -23,7 +23,7 @@ func (d *dive) Solve() []string {
 	input := d.GetInputLines()
 	var results []string
 	results = append(results, strconv.Itoa(d.getPositionProduct(input)))
-	results = append(results, strconv.Itoa(d.part2(input)))
+	results = append(results, strconv.Itoa(d.getCorrectPositionProduct(input)))
 
 	return results
 }
@@ -101,7 +101,7 @@ After following these new instructions, you would have a horizontal position of 
 
 Using this new interpretation of the commands, calculate the horizontal position and depth you would have after following the planned course. What do you get if you multiply your final horizontal position by your final depth?
 */
-func (d *dive) part2(input []string) int {
+func (d *dive) getCorrectPositionProduct(input []string) int {
 	var aim, posX, posY int
 
 	for _, vector := range input {
