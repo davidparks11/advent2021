@@ -16,6 +16,7 @@ var problems = []advent.Problem{
 	advent.NewSonorSweep(1),
 	advent.NewDive(2),
 	advent.NewBinaryDiagnostic(3),
+	advent.NewSmokeBasin(9),
 }
 
 func main() {
