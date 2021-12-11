@@ -19,6 +19,7 @@ var problems = []advent.Problem{
 	advent.NewGiantSquid(4),
 	advent.NewSmokeBasin(9),
 	advent.NewSyntaxScoring(10),
+	advent.NewDumboOctopus(11),
 }
 
 func main() {
