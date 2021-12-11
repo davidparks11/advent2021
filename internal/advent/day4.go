@@ -21,6 +21,7 @@ func (g *giantSquid) Solve() []string {
 	input := g.GetInputLines()
 	var results []string
 	results = append(results, strconv.Itoa(g.winningBoardScore(input)))
+	results = append(results, strconv.Itoa(g.lastWinningBoardScore(input)))
 	return results
 }
 
@@ -85,24 +86,56 @@ func (g *giantSquid) winningBoardScore(input []string) int {
 	for i, num := range chosenNums {
 		for _, b := range boards {
 			if winner := b.mark(num); i > 4 && winner {
-				return b.score(num)
+				return b.score()
 			}
 		}
 	}
 	return 0
 }
 
+/*
+On the other hand, it might be wise to try a different strategy: let the giant squid win.
+
+You aren't sure how many bingo boards a giant squid could play at once, so rather than waste time counting its arms, the safe thing to do is to figure out which board will win last and choose that one. That way, no matter which boards it picks, it will win for sure.
+
+In the above example, the second board is the last to win, which happens after 13 is eventually called and its middle column is completely marked. If you were to keep playing until this point, the second board would have a sum of unmarked numbers equal to 148 for a final score of 148 * 13 = 1924.
+
+Figure out which board will win last. Once it wins, what would its final score be?
+*/
+func (g *giantSquid) lastWinningBoardScore(input []string) int {
+	chosenNums := g.parseChosenNumbers(input[0])
+	boards := g.makeBoards(input[2:])
+	var winners []*board
+	for i, num := range chosenNums {
+		for _, b := range boards {
+			if winner := b.mark(num); i > 4 && winner {
+				winners = append(winners, b)
+			}
+		}
+	}
+	return winners[len(winners)-1].score()
+}
+
+
 type board struct {
 	places [25]int
 	marks uint32
+	lastNum int
+	won bool
 }
 
 func (b *board) mark(num int) bool {
+	if b.won {
+		return false //prevent returning a board more than once as a winner
+	}
+
 	for i, place := range b.places {
 		if place == num {
+			b.lastNum = num
 			b.marks |= (1 << i)
 			for _, mask := range winMasks {
 				if b.marks & mask == mask {
+					b.won = true
 					return true
 				}
 			}
@@ -112,7 +145,7 @@ func (b *board) mark(num int) bool {
 	return false
 }
 
-func (b *board) score(lastNum int) int {
+func (b *board) score() int {
 	unused := 0
 	for i, num := range b.places {
 		if b.marks & (1 << i) == 0 {
@@ -120,7 +153,7 @@ func (b *board) score(lastNum int) int {
 		}
 	}
 
-	return unused * lastNum
+	return unused * b.lastNum
 }
 
 var winMasks = []uint32 {
