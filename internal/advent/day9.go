@@ -4,6 +4,8 @@ import (
 	"strconv"
 )
 
+var _ Problem = &smokeBasin{}
+
 type smokeBasin struct {
 	dailyProblem
 }

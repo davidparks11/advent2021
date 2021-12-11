@@ -5,6 +5,7 @@ import (
 	"strings"
 )
 
+var _ Problem = &giantSquid{}
 type giantSquid struct {
 	dailyProblem
 }

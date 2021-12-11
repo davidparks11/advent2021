@@ -5,6 +5,8 @@ import (
 	"strconv"
 )
 
+var _ Problem = &syntaxScoring{}
+
 type syntaxScoring struct {
 	dailyProblem
 }
