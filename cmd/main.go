@@ -17,6 +17,7 @@ var problems = []advent.Problem{
 	advent.NewDive(2),
 	advent.NewBinaryDiagnostic(3),
 	advent.NewGiantSquid(4),
+	advent.NewHydrothermalVenture(),
 	advent.NewSmokeBasin(9),
 	advent.NewSyntaxScoring(10),
 	advent.NewDumboOctopus(11),
