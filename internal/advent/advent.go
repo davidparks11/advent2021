@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"strings"
 )
 
 type Problem interface {
@@ -23,6 +24,7 @@ func NewProblemSet() *problemSet {
 		NewGiantSquid(),
 		NewHydrothermalVenture(),
 		NewLanternFish(),
+		NewTheTreacheryOfWhales(),
 		NewSmokeBasin(),
 		NewSyntaxScoring(),
 		NewDumboOctopus(),
@@ -128,4 +130,16 @@ func IntsFromStrings(inputLines []string) []int {
 		input[i] = intValue
 	}
 	return input
+}
+
+func CommaSplitInts(input string) []int {
+	var nums []int
+	for _, numString := range strings.Split(input, ",") {
+		num, err := strconv.ParseInt(numString, 10, 32)
+		if err != nil {
+			log.Fatal(err.Error())
+		}
+		nums = append(nums, int(num))
+	}
+	return nums
 }
