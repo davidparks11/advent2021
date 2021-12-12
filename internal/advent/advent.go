@@ -22,6 +22,7 @@ func NewProblemSet() *problemSet {
 		NewBinaryDiagnostic(),
 		NewGiantSquid(),
 		NewHydrothermalVenture(),
+		NewLanternFish(),
 		NewSmokeBasin(),
 		NewSyntaxScoring(),
 		NewDumboOctopus(),
