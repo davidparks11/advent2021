@@ -1,9 +1,5 @@
 package advent
 
-import (
-	"strconv"
-)
-
 var _ Problem = &smokeBasin{}
 
 type smokeBasin struct {
@@ -18,11 +14,11 @@ func NewSmokeBasin() Problem {
 	}
 }
 
-func (s *smokeBasin) Solve() []string {
+func (s *smokeBasin) Solve() []int {
 	input := s.inputToMap(s.GetInputLines())
-	var results []string
-	results = append(results, strconv.Itoa(s.sumRiskLevels(input)))
-	results = append(results, strconv.Itoa(s.threeLargestBasins(input)))
+	var results []int
+	results = append(results, s.sumRiskLevels(input))
+	results = append(results, s.threeLargestBasins(input))
 	return results
 }
 

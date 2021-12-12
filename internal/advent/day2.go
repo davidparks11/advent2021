@@ -19,11 +19,11 @@ func NewDive() Problem {
 	}
 }
 
-func (d *dive) Solve() []string {
+func (d *dive) Solve() []int {
 	input := d.GetInputLines()
-	var results []string
-	results = append(results, strconv.Itoa(d.getPositionProduct(input)))
-	results = append(results, strconv.Itoa(d.getCorrectPositionProduct(input)))
+	var results []int
+	results = append(results, d.getPositionProduct(input))
+	results = append(results, d.getCorrectPositionProduct(input))
 
 	return results
 }

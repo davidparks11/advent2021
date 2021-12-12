@@ -1,9 +1,5 @@
 package advent
 
-import (
-	"strconv"
-)
-
 var _ Problem = &dumboOctopus{}
 
 type dumboOctopus struct {
@@ -18,11 +14,11 @@ func NewDumboOctopus() Problem {
 	}
 }
 
-func (d *dumboOctopus) Solve() []string {
+func (d *dumboOctopus) Solve() []int {
 	input := d.GetInputLines()
-	var results []string
-	results = append(results, strconv.Itoa(d.flashCount(input)))
-	results = append(results, strconv.Itoa(d.syncStep(input)))
+	var results []int
+	results = append(results, d.flashCount(input))
+	results = append(results, d.syncStep(input))
 
 	return results
 }

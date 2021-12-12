@@ -1,9 +1,5 @@
 package advent
 
-import (
-	"strconv"
-)
-
 var _ Problem = &sonorSweep{}
 
 type sonorSweep struct {
@@ -16,11 +12,11 @@ func NewSonorSweep() Problem {
 	}
 }
 
-func (s *sonorSweep) Solve() []string {
+func (s *sonorSweep) Solve() []int {
 	input := IntsFromStrings(s.GetInputLines())
-	var results []string
-	results = append(results, strconv.Itoa(s.countDepthIncreases(input)))
-	results = append(results, strconv.Itoa(s.count3WideDepthIncreases(input)))
+	var results []int
+	results = append(results, s.countDepthIncreases(input))
+	results = append(results, s.count3WideDepthIncreases(input))
 
 	return results
 }

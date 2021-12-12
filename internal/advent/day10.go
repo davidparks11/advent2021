@@ -2,7 +2,6 @@ package advent
 
 import (
 	"sort"
-	"strconv"
 )
 
 var _ Problem = &syntaxScoring{}
@@ -19,11 +18,11 @@ func NewSyntaxScoring() Problem {
 	}
 }
 
-func (s *syntaxScoring) Solve() []string {
+func (s *syntaxScoring) Solve() []int {
 	input := s.GetInputLines()
-	var results []string
-	results = append(results, strconv.Itoa(s.syntaxErrorScore(input)))
-	results = append(results, strconv.Itoa(s.part2(input)))
+	var results []int
+	results = append(results, s.syntaxErrorScore(input))
+	results = append(results, s.part2(input))
 	return results
 }
 

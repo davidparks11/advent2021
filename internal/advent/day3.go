@@ -18,11 +18,11 @@ func NewBinaryDiagnostic() Problem {
 	}
 }
 
-func (b *binaryDiagnostic) Solve() []string {
+func (b *binaryDiagnostic) Solve() []int {
 	input := b.GetInputLines()
-	var results []string
-	results = append(results, strconv.Itoa(b.powerConsumption(input)))
-	results = append(results, strconv.Itoa(b.lifeSupportRating(input)))
+	var results []int
+	results = append(results, b.powerConsumption(input))
+	results = append(results, b.lifeSupportRating(input))
 
 	return results
 }

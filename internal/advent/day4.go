@@ -18,11 +18,11 @@ func NewGiantSquid() Problem {
 	}
 }
 
-func (g *giantSquid) Solve() []string {
+func (g *giantSquid) Solve() []int {
 	input := g.GetInputLines()
-	var results []string
-	results = append(results, strconv.Itoa(g.winningBoardScore(input)))
-	results = append(results, strconv.Itoa(g.lastWinningBoardScore(input)))
+	var results []int
+	results = append(results, g.winningBoardScore(input))
+	results = append(results, g.lastWinningBoardScore(input))
 	return results
 }
 

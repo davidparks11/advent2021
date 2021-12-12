@@ -2,26 +2,12 @@ package main
 
 import (
 	"flag"
-	"fmt"
-	"log"
-	"os"
-	"strings"
 
 	"github.com/davidparks11/advent2021/internal/advent"
 )
 
 //TODO Add usage
 
-var problems = []advent.Problem{
-	advent.NewSonorSweep(),
-	advent.NewDive(),
-	advent.NewBinaryDiagnostic(),
-	advent.NewGiantSquid(),
-	advent.NewHydrothermalVenture(),
-	advent.NewSmokeBasin(),
-	advent.NewSyntaxScoring(),
-	advent.NewDumboOctopus(),
-}
 
 func main() {
 	var printToConsole bool
@@ -40,33 +26,8 @@ func main() {
 		day = *inputDay
 	}
 
-	for _, p := range problems {
-		problemDay := p.Day()
-		if day == 0 || problemDay == day {
-			result := p.Solve()
-			if printToConsole {
-				log.Printf("Result for Day %d: %v\n", problemDay, result)
-			} else {
-				WriteResult(result, problemDay)
-			}
-		} 
-	}
-}
+	problems := advent.NewProblemSet()
+	problems.Solve(printToConsole, day)
 
-//WriteResult takes result as a string and writes/overwrites the content to a result.txt file
-func WriteResult(result []string, day int) {
-	fileName := fmt.Sprintf("resources/results/result%d.txt", day)
-	resultFile, err := os.OpenFile(fileName, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	if _, err = resultFile.WriteString(strings.Join(result, "\n")); err != nil {
-		log.Fatal(err)
-	}
-	
-	if err = resultFile.Close(); err != nil {
-		log.Fatal(err)
-	}
 }
 

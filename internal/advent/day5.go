@@ -17,11 +17,11 @@ func NewHydrothermalVenture() Problem {
 	}
 }
 
-func (h *hydrothermalVenture) Solve() []string {
+func (h *hydrothermalVenture) Solve() []int {
 	input := h.GetInputLines()
-	var results []string
-	results = append(results, strconv.Itoa(h.countCrosses(input)))
-	results = append(results, strconv.Itoa(h.countAllCross(input)))
+	var results []int
+	results = append(results, h.countCrosses(input))
+	results = append(results, h.countAllCross(input))
 
 	return results
 }
