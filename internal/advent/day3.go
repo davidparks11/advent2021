@@ -10,10 +10,10 @@ type binaryDiagnostic struct {
 	dailyProblem
 }
 
-func NewBinaryDiagnostic(day int) Problem {
+func NewBinaryDiagnostic() Problem {
 	return &binaryDiagnostic{
 		dailyProblem{
-			day: day,
+			day: 3,
 		},
 	}
 }

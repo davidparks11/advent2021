@@ -10,9 +10,9 @@ type sonorSweep struct {
 	dailyProblem
 }
 
-func NewSonorSweep(day int) Problem {
+func NewSonorSweep() Problem {
 	return &sonorSweep{
-		dailyProblem{day: day},
+		dailyProblem{day: 1},
 	}
 }
 

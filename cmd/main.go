@@ -13,14 +13,14 @@ import (
 //TODO Add usage
 
 var problems = []advent.Problem{
-	advent.NewSonorSweep(1),
-	advent.NewDive(2),
-	advent.NewBinaryDiagnostic(3),
-	advent.NewGiantSquid(4),
+	advent.NewSonorSweep(),
+	advent.NewDive(),
+	advent.NewBinaryDiagnostic(),
+	advent.NewGiantSquid(),
 	advent.NewHydrothermalVenture(),
-	advent.NewSmokeBasin(9),
-	advent.NewSyntaxScoring(10),
-	advent.NewDumboOctopus(11),
+	advent.NewSmokeBasin(),
+	advent.NewSyntaxScoring(),
+	advent.NewDumboOctopus(),
 }
 
 func main() {

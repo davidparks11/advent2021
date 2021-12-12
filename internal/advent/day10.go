@@ -11,10 +11,10 @@ type syntaxScoring struct {
 	dailyProblem
 }
 
-func NewSyntaxScoring(day int) Problem {
+func NewSyntaxScoring() Problem {
 	return &syntaxScoring{
 		dailyProblem{
-			day: day,
+			day: 10,
 		},
 	}
 }

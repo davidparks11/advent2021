@@ -10,10 +10,10 @@ type giantSquid struct {
 	dailyProblem
 }
 
-func NewGiantSquid(day int) Problem {
+func NewGiantSquid() Problem {
 	return &giantSquid{
 		dailyProblem{
-			day: day,
+			day: 4,
 		},
 	}
 }

@@ -10,10 +10,10 @@ type dumboOctopus struct {
 	dailyProblem
 }
 
-func NewDumboOctopus(day int) Problem {
+func NewDumboOctopus() Problem {
 	return &dumboOctopus{
 		dailyProblem{
-			day: day,
+			day: 11,
 		},
 	}
 }

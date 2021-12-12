@@ -11,10 +11,10 @@ type dive struct {
 	dailyProblem
 }
 
-func NewDive(day int) Problem {
+func NewDive() Problem {
 	return &dive{
 		dailyProblem{
-			day: day,
+			day: 2,
 		},
 	}
 }

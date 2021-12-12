@@ -10,10 +10,10 @@ type smokeBasin struct {
 	dailyProblem
 }
 
-func NewSmokeBasin(day int) Problem {
+func NewSmokeBasin() Problem {
 	return &smokeBasin{
 		dailyProblem{
-			day: day,
+			day: 9,
 		},
 	}
 }
