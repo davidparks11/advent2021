@@ -25,6 +25,7 @@ func NewProblemSet() *problemSet {
 		NewHydrothermalVenture(),
 		NewLanternFish(),
 		NewTheTreacheryOfWhales(),
+		NewSevenSegmentSearch(),
 		NewSmokeBasin(),
 		NewSyntaxScoring(),
 		NewDumboOctopus(),
