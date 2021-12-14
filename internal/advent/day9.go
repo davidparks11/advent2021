@@ -14,7 +14,7 @@ func NewSmokeBasin() Problem {
 	}
 }
 
-func (s *smokeBasin) Solve() []int {
+func (s *smokeBasin) Solve() interface{} {
 	input := s.inputToMap(s.GetInputLines())
 	var results []int
 	results = append(results, s.sumRiskLevels(input))
@@ -77,7 +77,6 @@ func (s *smokeBasin) sumRiskLevels(locationHeights [][]int) int {
 	return riskLevels
 }
 
-
 /*
 Next, you need to find the largest basins so you know what areas are most important to avoid.
 
@@ -119,7 +118,6 @@ What do you get if you multiply together the sizes of the three largest basins?
 */
 func (s *smokeBasin) threeLargestBasins(locationHeights [][]int) int {
 
-
 	lowPoints := []point{}
 	for y := 0; y < len(locationHeights); y++ {
 		for x := 0; x < len(locationHeights[y]); x++ {
@@ -130,7 +128,7 @@ func (s *smokeBasin) threeLargestBasins(locationHeights [][]int) int {
 	}
 
 	first, second, third := 0, 0, 0
-	checkLargest := func (size int) {
+	checkLargest := func(size int) {
 		if size > first {
 			first, second, third = size, first, second
 		} else if size > second {
@@ -143,25 +141,25 @@ func (s *smokeBasin) threeLargestBasins(locationHeights [][]int) int {
 	for _, p := range lowPoints {
 		seen := make(map[point]struct{}) //set of points
 		checkLargest(s.calcBasinSize(locationHeights, seen, p.x, p.y))
-	} 
+	}
 
-	return first*second*third
+	return first * second * third
 }
 
 //counts number of locations in basin
 func (s *smokeBasin) calcBasinSize(locationHeights [][]int, seen map[point]struct{}, x, y int) int {
 	seen[point{x, y}] = struct{}{}
 	count := 1
-	if _, found := seen[point{x-1, y}]; !found && s.inBounds(locationHeights, x-1, y) && locationHeights[y][x] < locationHeights[y][x-1] && locationHeights[y][x-1] != 9 {
+	if _, found := seen[point{x - 1, y}]; !found && s.inBounds(locationHeights, x-1, y) && locationHeights[y][x] < locationHeights[y][x-1] && locationHeights[y][x-1] != 9 {
 		count += s.calcBasinSize(locationHeights, seen, x-1, y)
 	}
-	if _, found := seen[point{x+1, y}]; !found && s.inBounds(locationHeights, x+1, y) && locationHeights[y][x] < locationHeights[y][x+1] && locationHeights[y][x+1] != 9 {
+	if _, found := seen[point{x + 1, y}]; !found && s.inBounds(locationHeights, x+1, y) && locationHeights[y][x] < locationHeights[y][x+1] && locationHeights[y][x+1] != 9 {
 		count += s.calcBasinSize(locationHeights, seen, x+1, y)
 	}
-	if _, found := seen[point{x, y-1}]; !found && s.inBounds(locationHeights, x, y-1) && locationHeights[y][x] < locationHeights[y-1][x] && locationHeights[y-1][x] != 9 {
+	if _, found := seen[point{x, y - 1}]; !found && s.inBounds(locationHeights, x, y-1) && locationHeights[y][x] < locationHeights[y-1][x] && locationHeights[y-1][x] != 9 {
 		count += s.calcBasinSize(locationHeights, seen, x, y-1)
 	}
-	if _, found := seen[point{x, y+1}]; !found && s.inBounds(locationHeights, x, y+1) && locationHeights[y][x] < locationHeights[y+1][x] && locationHeights[y+1][x] != 9 {
+	if _, found := seen[point{x, y + 1}]; !found && s.inBounds(locationHeights, x, y+1) && locationHeights[y][x] < locationHeights[y+1][x] && locationHeights[y+1][x] != 9 {
 		count += s.calcBasinSize(locationHeights, seen, x, y+1)
 	}
 
@@ -170,13 +168,13 @@ func (s *smokeBasin) calcBasinSize(locationHeights [][]int, seen map[point]struc
 
 //bounds check - assumes grid if not empty
 func (s *smokeBasin) inBounds(grid [][]int, x, y int) bool {
-	return x >=0 && x < len(grid[0]) && y >= 0 && y < len(grid)
+	return x >= 0 && x < len(grid[0]) && y >= 0 && y < len(grid)
 }
 
 //checks whether or not surrounding locations are less than current location
 func (s *smokeBasin) isLowestPoint(grid [][]int, x, y int) bool {
 	return (x > 0 && grid[y][x] < grid[y][x-1]) || //left location
-	(x < len(grid[y])-1 && grid[y][x] < grid[y][x+1]) || //right location 
-	(y > 0 && grid[y][x] < grid[y-1][x]) || //up location
-	(y < len(grid)-1 && grid[y][x] < grid[y+1][x]) //down location
+		(x < len(grid[y])-1 && grid[y][x] < grid[y][x+1]) || //right location
+		(y > 0 && grid[y][x] < grid[y-1][x]) || //up location
+		(y < len(grid)-1 && grid[y][x] < grid[y+1][x]) //down location
 }

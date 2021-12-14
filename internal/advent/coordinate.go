@@ -21,7 +21,7 @@ func (l *line) isVertical() bool {
 }
 
 func (l *line) isDiagonal() bool {
-	return math.Abs(l.p1.x - l.p2.x) == math.Abs(l.p1.y - l.p2.y) 
+	return math.Abs(l.p1.x-l.p2.x) == math.Abs(l.p1.y-l.p2.y)
 }
 
 //returns points along line from p1 to p2 inclusively
@@ -35,8 +35,8 @@ func (l *line) points() []*point {
 	delta := math.Max(math.Abs(xDist), math.Abs(yDist))
 	for i := 0; i <= delta; i++ {
 		points = append(points, &point{
-			x: l.p1.x + xSign * i,
-			y: l.p1.y + ySign * i,
+			x: l.p1.x + xSign*i,
+			y: l.p1.y + ySign*i,
 		})
 	}
 

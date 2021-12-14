@@ -6,6 +6,7 @@ import (
 )
 
 var _ Problem = &giantSquid{}
+
 type giantSquid struct {
 	dailyProblem
 }
@@ -18,7 +19,7 @@ func NewGiantSquid() Problem {
 	}
 }
 
-func (g *giantSquid) Solve() []int {
+func (g *giantSquid) Solve() interface{} {
 	input := g.GetInputLines()
 	var results []int
 	results = append(results, g.winningBoardScore(input))
@@ -117,12 +118,11 @@ func (g *giantSquid) lastWinningBoardScore(input []string) int {
 	return winners[len(winners)-1].score()
 }
 
-
 type board struct {
-	places [25]int
-	marks uint32
+	places  [25]int
+	marks   uint32
 	lastNum int
-	won bool
+	won     bool
 }
 
 func (b *board) mark(num int) bool {
@@ -135,7 +135,7 @@ func (b *board) mark(num int) bool {
 			b.lastNum = num
 			b.marks |= (1 << i)
 			for _, mask := range winMasks {
-				if b.marks & mask == mask {
+				if b.marks&mask == mask {
 					b.won = true
 					return true
 				}
@@ -149,7 +149,7 @@ func (b *board) mark(num int) bool {
 func (b *board) score() int {
 	unused := 0
 	for i, num := range b.places {
-		if b.marks & (1 << i) == 0 {
+		if b.marks&(1<<i) == 0 {
 			unused += num
 		}
 	}
@@ -157,7 +157,7 @@ func (b *board) score() int {
 	return unused * b.lastNum
 }
 
-var winMasks = []uint32 {
+var winMasks = []uint32{
 	0b1111100000000000000000000, //first row
 	0b0000011111000000000000000, //second row
 	0b0000000000111110000000000, //third row

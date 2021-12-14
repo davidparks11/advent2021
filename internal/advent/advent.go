@@ -10,7 +10,7 @@ import (
 )
 
 type Problem interface {
-	Solve() []int
+	Solve() interface{}
 	Day() int
 }
 
@@ -29,6 +29,7 @@ func NewProblemSet() *problemSet {
 		NewSmokeBasin(),
 		NewSyntaxScoring(),
 		NewDumboOctopus(),
+		NewTransparentOrigami(),
 	}
 
 	p := make(problemSet)
@@ -52,7 +53,7 @@ const Christmas = 25
 func (p *problemSet) Solve(writeToConsole bool, day int) {
 	if day != 0 {
 		if writeToConsole {
-			log.Printf("Result for Day %d: %v\n", day, p.Get(day).Solve())
+			p.PrintToConsole(day)
 		} else {
 			p.WriteResultFile(day)
 		}
@@ -60,12 +61,21 @@ func (p *problemSet) Solve(writeToConsole bool, day int) {
 		for day := 1; day <= Christmas; day++ {
 			if _, found := (*p)[day]; found {
 				if writeToConsole {
-					log.Printf("Result for Day %d: %v\n", day, p.Get(day).Solve())
+					p.PrintToConsole(day)
 				} else {
 					p.WriteResultFile(day)
 				}
 			}
 		}
+	}
+}
+
+func (p *problemSet) PrintToConsole(day int) {
+	results := p.Get(day).Solve()
+	if resultStrings, ok := results.([]string); ok {
+		log.Printf("Result for Day %d:\n%s\n", day, strings.Join(resultStrings, "\n"))
+	} else {
+		log.Printf("Result for Day %d: %v\n", day, results)
 	}
 }
 
@@ -79,7 +89,13 @@ func (p *problemSet) WriteResultFile(day int) {
 		log.Fatal(err)
 	}
 
-	if _, err = resultFile.WriteString(fmt.Sprint(problem.Solve())); err != nil {
+	results := problem.Solve()
+	if resultStrings, ok := results.([]string); ok {
+		_, err = resultFile.WriteString(strings.Join(resultStrings, "\n"))
+	} else {
+		_, err = resultFile.WriteString(fmt.Sprint(problem.Solve()))
+	}
+	if err != nil {
 		log.Fatal(err)
 	}
 

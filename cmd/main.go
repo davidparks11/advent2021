@@ -8,14 +8,13 @@ import (
 
 //TODO Add usage
 
-
 func main() {
 	var printToConsole bool
 	var day int
 
-	inputPrintToConsole := flag.Bool("console", false, "prints to console instead of a result file") 
-	inputDay := flag.Int("day", 0, "result for specific day 1-25") 
-	
+	inputPrintToConsole := flag.Bool("console", false, "prints to console instead of a result file")
+	inputDay := flag.Int("day", 0, "result for specific day 1-25")
+
 	flag.Parse()
 
 	if inputPrintToConsole != nil {
@@ -30,4 +29,3 @@ func main() {
 	problems.Solve(printToConsole, day)
 
 }
-

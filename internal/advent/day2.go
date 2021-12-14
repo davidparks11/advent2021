@@ -19,7 +19,7 @@ func NewDive() Problem {
 	}
 }
 
-func (d *dive) Solve() []int {
+func (d *dive) Solve() interface{} {
 	input := d.GetInputLines()
 	var results []int
 	results = append(results, d.getPositionProduct(input))
@@ -74,7 +74,7 @@ func (d *dive) getPositionProduct(input []string) int {
 		}
 	}
 
-	return posX*posY
+	return posX * posY
 }
 
 /*
@@ -107,17 +107,17 @@ func (d *dive) getCorrectPositionProduct(input []string) int {
 	for _, vector := range input {
 		direction, magnitude := d.parseInputLine(vector)
 		switch direction {
-		case "forward": 
+		case "forward":
 			posX += magnitude
-			posY += aim*magnitude
-		case "down": 
+			posY += aim * magnitude
+		case "down":
 			aim += magnitude
 		case "up":
 			aim -= magnitude
 		}
 	}
-	
-	return posX*posY
+
+	return posX * posY
 }
 
 func (d *dive) parseInputLine(vector string) (string, int) {

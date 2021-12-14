@@ -18,7 +18,7 @@ func NewSyntaxScoring() Problem {
 	}
 }
 
-func (s *syntaxScoring) Solve() []int {
+func (s *syntaxScoring) Solve() interface{} {
 	input := s.GetInputLines()
 	var results []int
 	results = append(results, s.syntaxErrorScore(input))
@@ -214,7 +214,7 @@ func (s *syntaxScoring) part2(input []string) int {
 		if len(chunks) > 0 {
 			//loop through stack in reverse order to match chunk ending
 			for i := len(chunks) - 1; i >= 0; i-- {
-				score = score * 5 + syntaxScore(chunks[i]) 
+				score = score*5 + syntaxScore(chunks[i])
 			}
 			scores = append(scores, score)
 		}

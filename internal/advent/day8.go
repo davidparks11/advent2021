@@ -3,7 +3,7 @@ package advent
 import (
 	"strings"
 )
- 
+
 var _ Problem = &sevenSegmentSearch{}
 
 type sevenSegmentSearch struct {
@@ -18,7 +18,7 @@ func NewSevenSegmentSearch() Problem {
 	}
 }
 
-func (s *sevenSegmentSearch) Solve() []int {
+func (s *sevenSegmentSearch) Solve() interface{} {
 	input := s.GetInputLines()
 	var results []int
 	results = append(results, s.uniqueSum(input))
@@ -201,7 +201,7 @@ func (s *sevenSegmentSearch) outputSum(input []string) int {
 		}
 		decodeOutput := 0
 		for _, o := range e.output {
-			decodeOutput = decodeOutput * 10 + s.matchDigit(&digits, o) 
+			decodeOutput = decodeOutput*10 + s.matchDigit(&digits, o)
 		}
 		sumOutputs += decodeOutput
 	}
@@ -235,17 +235,17 @@ func (s *sevenSegmentSearch) inferOtherCases(digits *[10]pattern, p pattern) {
 	//found with the one count and unique cases
 	switch p.oneCount() {
 	case 5:
-		if p | digits[4] == digits[8] {
+		if p|digits[4] == digits[8] {
 			digits[2] = p
-		} else if p & digits[7] == digits[7] {
+		} else if p&digits[7] == digits[7] {
 			digits[3] = p
 		} else {
 			digits[5] = p
 		}
 	case 6:
-		if p & digits[4] == digits[4] {
+		if p&digits[4] == digits[4] {
 			digits[9] = p
-		} else if p & digits[7] == digits[7] {
+		} else if p&digits[7] == digits[7] {
 			digits[0] = p
 		} else {
 			digits[6] = p
@@ -259,7 +259,7 @@ type entry struct {
 }
 
 //a pattern stores segment information in 7 bit bitmask in the order gfedcba.
-//Ex: cfgab = 1100111	
+//Ex: cfgab = 1100111
 type pattern uint8
 
 func (s *pattern) oneCount() uint8 {

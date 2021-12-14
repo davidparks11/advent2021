@@ -18,7 +18,7 @@ func NewTheTreacheryOfWhales() Problem {
 	}
 }
 
-func (t *theTreacheryOfWhales) Solve() []int {
+func (t *theTreacheryOfWhales) Solve() interface{} {
 	input := t.GetInputLines()
 	var results []int
 	results = append(results, t.minCostLinear(input))
@@ -90,10 +90,10 @@ Determine the horizontal position that the crabs can align to using the least fu
 */
 func (t *theTreacheryOfWhales) minCostExponential(input []string) int {
 	return t.calcMinFuelCost(CommaSplitInts(
-		input[0]), 
+		input[0]),
 		func(pos, dest int) int {
 			dist := math.Abs(pos - dest)
-			return dist * (dist + 1)/2 //close form of Summation of natural numbers  f(n) = 1 + 2 + 3 + 4 + ... + n
+			return dist * (dist + 1) / 2 //close form of Summation of natural numbers  f(n) = 1 + 2 + 3 + 4 + ... + n
 		},
 	)
 }

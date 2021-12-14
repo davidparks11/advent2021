@@ -14,7 +14,7 @@ func NewLanternFish() Problem {
 	}
 }
 
-func (l *lanternFish) Solve() []int {
+func (l *lanternFish) Solve() interface{} {
 	input := l.GetInputLines()
 	var results []int
 	results = append(results, l.fishCount80(input))
@@ -25,7 +25,7 @@ func (l *lanternFish) Solve() []int {
 func (l *lanternFish) parseInput(input string) []int {
 	var nums []int
 	for i := 0; i < len(input); i += 2 {
-		nums = append(nums, int(input[i]) - 48) //48 = '0'
+		nums = append(nums, int(input[i])-48) //48 = '0'
 	}
 	return nums
 }
@@ -107,8 +107,8 @@ func (l *lanternFish) fishAfterDays(initialStates []int, days int) int {
 		for i := 0; i < 8; i++ {
 			states[i] = states[i+1]
 		}
-		states[8] = temp //add new fist at day 8
-		states[6]+= temp //reset 0 day fish
+		states[8] = temp  //add new fist at day 8
+		states[6] += temp //reset 0 day fish
 	}
 
 	sum := 0

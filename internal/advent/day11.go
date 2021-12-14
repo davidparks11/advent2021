@@ -14,7 +14,7 @@ func NewDumboOctopus() Problem {
 	}
 }
 
-func (d *dumboOctopus) Solve() []int {
+func (d *dumboOctopus) Solve() interface{} {
 	input := d.GetInputLines()
 	var results []int
 	results = append(results, d.flashCount(input))
@@ -93,12 +93,12 @@ func (d *dumboOctopus) flashCount(input []string) int {
 
 func (d *dumboOctopus) syncStep(input []string) int {
 	grid := d.parseInput(input)
-	totalOctopuses := grid.width*grid.length
+	totalOctopuses := grid.width * grid.length
 	steps := 0
 	for {
 		steps++
 		if flashes := grid.step(); flashes == totalOctopuses {
-			break 
+			break
 		}
 	}
 	return steps

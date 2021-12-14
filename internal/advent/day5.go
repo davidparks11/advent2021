@@ -17,7 +17,7 @@ func NewHydrothermalVenture() Problem {
 	}
 }
 
-func (h *hydrothermalVenture) Solve() []int {
+func (h *hydrothermalVenture) Solve() interface{} {
 	input := h.GetInputLines()
 	var results []int
 	results = append(results, h.countCrosses(input))
@@ -74,7 +74,7 @@ func (h *hydrothermalVenture) countCrosses(input []string) int {
 			pointCrosses[*p]++
 		}
 	}
-	
+
 	crossCount := 0
 	for _, c := range pointCrosses {
 		if c > 1 {
@@ -116,7 +116,7 @@ func (h *hydrothermalVenture) countAllCross(input []string) int {
 			pointCrosses[*p]++
 		}
 	}
-	
+
 	crossCount := 0
 	for _, c := range pointCrosses {
 		if c > 1 {
@@ -157,4 +157,3 @@ func (h *hydrothermalVenture) parseLine(input string) *line {
 		p2: point{nums[2], nums[3]},
 	}
 }
-

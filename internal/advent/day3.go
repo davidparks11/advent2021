@@ -18,7 +18,7 @@ func NewBinaryDiagnostic() Problem {
 	}
 }
 
-func (b *binaryDiagnostic) Solve() []int {
+func (b *binaryDiagnostic) Solve() interface{} {
 	input := b.GetInputLines()
 	var results []int
 	results = append(results, b.powerConsumption(input))
@@ -164,7 +164,7 @@ func (b *binaryDiagnostic) lifeSupportRating(input []string) int {
 		}
 	}
 
-	oxygen := getDiagnostic(true) 
+	oxygen := getDiagnostic(true)
 	cO2 := getDiagnostic(false)
 	return oxygen * cO2
 }
