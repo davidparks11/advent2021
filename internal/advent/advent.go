@@ -30,6 +30,7 @@ func NewProblemSet() *problemSet {
 		NewSyntaxScoring(),
 		NewDumboOctopus(),
 		NewTransparentOrigami(),
+		NewExtendedPolymerization(),
 	}
 
 	p := make(problemSet)
