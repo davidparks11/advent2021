@@ -15,24 +15,11 @@ func NewSmokeBasin() Problem {
 }
 
 func (s *smokeBasin) Solve() interface{} {
-	input := s.inputToMap(s.GetInputLines())
+	input := asciiNumGridToIntArray(s.GetInputLines())
 	var results []int
 	results = append(results, s.sumRiskLevels(input))
 	results = append(results, s.threeLargestBasins(input))
 	return results
-}
-
-func (s *smokeBasin) inputToMap(input []string) [][]int {
-	const asciiOffSet = 48 //char '0' numeric value
-
-	output := make([][]int, len(input))
-	for i, line := range input {
-		output[i] = make([]int, len(line))
-		for j, num := range line {
-			output[i][j] = int(num - asciiOffSet)
-		}
-	}
-	return output
 }
 
 /*

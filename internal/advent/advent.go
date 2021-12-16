@@ -31,6 +31,7 @@ func NewProblemSet() *problemSet {
 		NewDumboOctopus(),
 		NewTransparentOrigami(),
 		NewExtendedPolymerization(),
+		NewChiton(),
 	}
 
 	p := make(problemSet)
@@ -160,4 +161,17 @@ func CommaSplitInts(input string) []int {
 		nums = append(nums, int(num))
 	}
 	return nums
+}
+
+func asciiNumGridToIntArray(input []string) [][]int {
+	const asciiOffSet = 48 //char '0' numeric value
+
+	output := make([][]int, len(input))
+	for i, line := range input {
+		output[i] = make([]int, len(line))
+		for j, num := range line {
+			output[i][j] = int(num - asciiOffSet)
+		}
+	}
+	return output
 }
