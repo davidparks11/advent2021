@@ -1,5 +1,7 @@
 package advent
 
+import . "github.com/davidparks11/advent2021/internal/advent/day11"
+
 var _ Problem = &dumboOctopus{}
 
 type dumboOctopus struct {
@@ -82,93 +84,67 @@ After 100 steps, there have been a total of 1656 flashes.
 Given the starting energy levels of the dumbo octopuses in your cavern, simulate 100 steps. How many total flashes are there after 100 steps?
 */
 func (d *dumboOctopus) flashCount(input []string) int {
-	grid := d.parseInput(input)
+	grid := ParseInput(input)
 
 	flashes := 0
 	for i := 0; i < 100; i++ {
-		flashes += grid.step()
+		flashes += grid.Step()
 	}
 	return flashes
 }
 
+/*
+It seems like the individual flashes aren't bright enough to navigate. However, you might have a better option: the flashes seem to be synchronizing!
+
+In the example above, the first time all octopuses flash simultaneously is step 195:
+
+After step 193:
+5877777777
+8877777777
+7777777777
+7777777777
+7777777777
+7777777777
+7777777777
+7777777777
+7777777777
+7777777777
+
+After step 194:
+6988888888
+9988888888
+8888888888
+8888888888
+8888888888
+8888888888
+8888888888
+8888888888
+8888888888
+8888888888
+
+After step 195:
+0000000000
+0000000000
+0000000000
+0000000000
+0000000000
+0000000000
+0000000000
+0000000000
+0000000000
+0000000000
+If you can calculate the exact moments when the octopuses will all flash simultaneously, you should be able to navigate through the cavern. What is the first step during which all octopuses flash?
+ */
+
 func (d *dumboOctopus) syncStep(input []string) int {
-	grid := d.parseInput(input)
-	totalOctopuses := grid.width * grid.length
+	grid := ParseInput(input)
+	totalOctopuses := grid.Width * grid.Length
 	steps := 0
 	for {
 		steps++
-		if flashes := grid.step(); flashes == totalOctopuses {
+		if flashes := grid.Step(); flashes == totalOctopuses {
 			break
 		}
 	}
 	return steps
-}
-
-type flashGrid struct {
-	width  int
-	length int
-	octos  []int
-}
-
-func (f *flashGrid) step() int {
-	flashed := make(map[int]struct{})
-	var queue []int
-	for i := 0; i < len(f.octos); i++ {
-		f.octos[i]++
-		if f.octos[i] > 9 {
-			flashed[i] = struct{}{}
-			queue = append(queue, i)
-		}
-	}
-
-	for len(queue) > 0 {
-		flash := queue[len(queue)-1]
-		queue = queue[:len(queue)-1] //remove element from queue
-		f.octos[flash] = 0
-		for _, neighbor := range f.neighbors(flash) {
-			if _, found := flashed[neighbor]; found {
-				continue
-			}
-			f.octos[neighbor]++
-			if f.octos[neighbor] > 9 {
-				flashed[neighbor] = struct{}{}
-				queue = append(queue, neighbor)
-			}
-		}
-	}
-	return len(flashed)
-}
-
-//changes from x, y to neighbors
-var neighborDeltas = []point{
-	{-1, -1}, {0, -1}, {1, -1},
-	{-1, 0}, {1, 0},
-	{-1, 1}, {0, 1}, {1, 1},
-}
-
-func (f *flashGrid) neighbors(i int) []int {
-	var neighborPositions []int
-	x, y := i%f.width, i/f.width
-	for _, delta := range neighborDeltas {
-		dx, dy := x+delta.x, y+delta.y
-		if dx < 0 || dx >= f.width || dy < 0 || dy >= f.length {
-			continue
-		}
-
-		neighborPositions = append(neighborPositions, dy*f.width+dx)
-	}
-	return neighborPositions
-}
-
-func (d *dumboOctopus) parseInput(input []string) *flashGrid {
-	var f flashGrid
-	f.length = len(input)
-	f.width = len(input[0])
-	for _, line := range input {
-		for _, char := range line {
-			f.octos = append(f.octos, int(char)-48)
-		}
-	}
-
-	return &f
 }

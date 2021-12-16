@@ -1,7 +1,7 @@
 package advent
 
 import (
-	"strings"
+	. "github.com/davidparks11/advent2021/internal/advent/day8"
 )
 
 var _ Problem = &sevenSegmentSearch{}
@@ -24,37 +24,6 @@ func (s *sevenSegmentSearch) Solve() interface{} {
 	results = append(results, s.uniqueSum(input))
 	results = append(results, s.outputSum(input))
 	return results
-}
-
-func (s *sevenSegmentSearch) parseInput(input []string) []*entry {
-	newSegmentFromString := func(str string) pattern {
-		var segment pattern
-		for _, char := range str {
-			segment |= 1 << (char - 'a')
-		}
-		return segment
-	}
-
-	var signalPatterns []*entry
-	for _, line := range input {
-		pipeSplit := strings.Split(strings.TrimSpace(line), " | ")
-
-		var patterns []pattern
-		var output []pattern
-		for _, patternString := range strings.Split(pipeSplit[0], " ") {
-			patterns = append(patterns, newSegmentFromString(patternString))
-		}
-		for _, outputString := range strings.Split(pipeSplit[1], " ") {
-			output = append(output, newSegmentFromString(outputString))
-		}
-
-		signalPatterns = append(signalPatterns, &entry{
-			patterns: patterns,
-			output:   output,
-		})
-	}
-
-	return signalPatterns
 }
 
 /*
@@ -126,11 +95,11 @@ Because the digits 1, 4, 7, and 8 each use a unique number of segments, you shou
 In the output values, how many times do digits 1, 4, 7, or 8 appear?
 */
 func (s *sevenSegmentSearch) uniqueSum(input []string) int {
-	signalPattens := s.parseInput(input)
+	signalPattens := ParseInput(input)
 	distinctSigCount := 0
 	for _, p := range signalPattens {
-		for _, o := range p.output {
-			if o.oneCount() == 2 || o.oneCount() == 3 || o.oneCount() == 4 || o.oneCount() == 7 {
+		for _, o := range p.Outputs {
+			if o.OneCount() == 2 || o.OneCount() == 3 || o.OneCount() == 4 || o.OneCount() == 7 {
 				distinctSigCount++
 			}
 		}
@@ -189,18 +158,18 @@ Adding all of the output values in this larger example produces 61229.
 For each entry, determine all of the wire/segment connections and decode the four-digit output values. What do you get if you add up all of the output values?
 */
 func (s *sevenSegmentSearch) outputSum(input []string) int {
-	entries := s.parseInput(input)
+	entries := ParseInput(input)
 	sumOutputs := 0
 	for _, e := range entries {
-		var digits [10]pattern
-		for _, p := range e.patterns {
+		var digits [10]Pattern
+		for _, p := range e.Patterns {
 			s.solveUniqueCases(&digits, p)
 		}
-		for _, p := range e.patterns {
+		for _, p := range e.Patterns {
 			s.inferOtherCases(&digits, p)
 		}
 		decodeOutput := 0
-		for _, o := range e.output {
+		for _, o := range e.Outputs {
 			decodeOutput = decodeOutput*10 + s.matchDigit(&digits, o)
 		}
 		sumOutputs += decodeOutput
@@ -208,7 +177,7 @@ func (s *sevenSegmentSearch) outputSum(input []string) int {
 	return sumOutputs
 }
 
-func (s *sevenSegmentSearch) matchDigit(digits *[10]pattern, p pattern) int {
+func (s *sevenSegmentSearch) matchDigit(digits *[10]Pattern, p Pattern) int {
 	for i, d := range digits {
 		if d == p {
 			return i
@@ -217,8 +186,8 @@ func (s *sevenSegmentSearch) matchDigit(digits *[10]pattern, p pattern) int {
 	return -1
 }
 
-func (s *sevenSegmentSearch) solveUniqueCases(digits *[10]pattern, p pattern) {
-	switch p.oneCount() {
+func (s *sevenSegmentSearch) solveUniqueCases(digits *[10]Pattern, p Pattern) {
+	switch p.OneCount() {
 	case 2:
 		digits[1] = p
 	case 3:
@@ -230,10 +199,10 @@ func (s *sevenSegmentSearch) solveUniqueCases(digits *[10]pattern, p pattern) {
 	}
 }
 
-func (s *sevenSegmentSearch) inferOtherCases(digits *[10]pattern, p pattern) {
+func (s *sevenSegmentSearch) inferOtherCases(digits *[10]Pattern, p Pattern) {
 	//all non-unique cases have a one count of 5 or 6. Their number can be
 	//found with the one count and unique cases
-	switch p.oneCount() {
+	switch p.OneCount() {
 	case 5:
 		if p|digits[4] == digits[8] {
 			digits[2] = p
@@ -251,21 +220,4 @@ func (s *sevenSegmentSearch) inferOtherCases(digits *[10]pattern, p pattern) {
 			digits[6] = p
 		}
 	}
-}
-
-type entry struct {
-	patterns []pattern
-	output   []pattern
-}
-
-//a pattern stores segment information in 7 bit bitmask in the order gfedcba.
-//Ex: cfgab = 1100111
-type pattern uint8
-
-func (s *pattern) oneCount() uint8 {
-	var count uint8
-	for n := 0; n < 7; n++ {
-		count += uint8(*s) >> n & 1
-	}
-	return count
 }

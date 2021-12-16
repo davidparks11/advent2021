@@ -22,14 +22,6 @@ func (l *lanternFish) Solve() interface{} {
 	return results
 }
 
-func (l *lanternFish) parseInput(input string) []int {
-	var nums []int
-	for i := 0; i < len(input); i += 2 {
-		nums = append(nums, int(input[i])-48) //48 = '0'
-	}
-	return nums
-}
-
 /*
 The sea floor is getting steeper. Maybe the sleigh keys got carried this way?
 
@@ -116,4 +108,12 @@ func (l *lanternFish) fishAfterDays(initialStates []int, days int) int {
 		sum += state
 	}
 	return sum
+}
+
+func (l *lanternFish) parseInput(input string) []int {
+	var nums []int
+	for i := 0; i < len(input); i += 2 {
+		nums = append(nums, int(input[i])-48) //48 = '0'
+	}
+	return nums
 }

@@ -1,8 +1,8 @@
 package advent
 
 import (
-	"strconv"
-	"strings"
+	. "github.com/davidparks11/advent2021/internal/advent/day5"
+	"github.com/davidparks11/advent2021/internal/coordinate"
 )
 
 type hydrothermalVenture struct {
@@ -41,7 +41,7 @@ They tend to form in lines; the submarine helpfully produces a list of nearby li
 3,4 -> 1,4
 0,0 -> 8,8
 5,5 -> 8,2
-Each line of vents is given as a line segment in the format x1,y1 -> x2,y2 where x1,y1 are the coordinates of one end the line segment and x2,y2 are the coordinates of the other end. These line segments include the points at both ends. In other words:
+Each Line of vents is given as a Line segment in the format x1,y1 -> x2,y2 where x1,y1 are the coordinates of one end the Line segment and x2,y2 are the coordinates of the other end. These Line segments include the points at both ends. In other words:
 
 An entry like 1,1 -> 1,3 covers points 1,1, 1,2, and 1,3.
 An entry like 9,7 -> 7,7 covers points 9,7, 8,7, and 7,7.
@@ -59,17 +59,17 @@ So, the horizontal and vertical lines from the above list would produce the foll
 ..........
 ..........
 222111....
-In this diagram, the top left corner is 0,0 and the bottom right corner is 9,9. Each position is shown as the number of lines which cover that point or . if no line covers that point. The top-left pair of 1s, for example, comes from 2,2 -> 2,1; the very bottom row is formed by the overlapping lines 0,9 -> 5,9 and 0,9 -> 2,9.
+In this diagram, the top left corner is 0,0 and the bottom right corner is 9,9. Each position is shown as the number of lines which cover that Point or . if no Line covers that Point. The top-left pair of 1s, for example, comes from 2,2 -> 2,1; the very bottom row is formed by the overlapping lines 0,9 -> 5,9 and 0,9 -> 2,9.
 
 To avoid the most dangerous areas, you need to determine the number of points where at least two lines overlap. In the above example, this is anywhere in the diagram with a 2 or larger - a total of 5 points.
 
 Consider only horizontal and vertical lines. At how many points do at least two lines overlap?
 */
 func (h *hydrothermalVenture) countCrosses(input []string) int {
-	lines := h.parseInput(input, false)
-	pointCrosses := make(map[point]int)
+	lines := ParseInput(input, false)
+	pointCrosses := make(map[coordinate.Point]int)
 	for _, l := range lines {
-		points := l.points()
+		points := l.Points()
 		for _, p := range points {
 			pointCrosses[*p]++
 		}
@@ -87,7 +87,7 @@ func (h *hydrothermalVenture) countCrosses(input []string) int {
 /*
 Unfortunately, considering only horizontal and vertical lines doesn't give you the full picture; you need to also consider diagonal lines.
 
-Because of the limits of the hydrothermal vent mapping system, the lines in your list will only ever be horizontal, vertical, or a diagonal line at exactly 45 degrees. In other words:
+Because of the limits of the hydrothermal vent mapping system, the lines in your list will only ever be horizontal, vertical, or a diagonal Line at exactly 45 degrees. In other words:
 
 An entry like 1,1 -> 3,3 covers points 1,1, 2,2, and 3,3.
 An entry like 9,7 -> 7,9 covers points 9,7, 8,8, and 7,9.
@@ -108,10 +108,10 @@ You still need to determine the number of points where at least two lines overla
 Consider all of the lines. At how many points do at least two lines overlap?
 */
 func (h *hydrothermalVenture) countAllCross(input []string) int {
-	lines := h.parseInput(input, true)
-	pointCrosses := make(map[point]int)
+	lines := ParseInput(input, true)
+	pointCrosses := make(map[coordinate.Point]int)
 	for _, l := range lines {
-		points := l.points()
+		points := l.Points()
 		for _, p := range points {
 			pointCrosses[*p]++
 		}
@@ -124,36 +124,4 @@ func (h *hydrothermalVenture) countAllCross(input []string) int {
 		}
 	}
 	return crossCount
-}
-
-func (h *hydrothermalVenture) parseInput(input []string, allowDiagonals bool) []*line {
-	var lines []*line
-	for _, inputLine := range input {
-		l := h.parseLine(inputLine)
-		if !(l.isHorizontal() || l.isVertical()) {
-			if !(allowDiagonals && l.isDiagonal()) {
-				continue
-			}
-		}
-		lines = append(lines, l)
-	}
-	return lines
-}
-
-func (h *hydrothermalVenture) parseLine(input string) *line {
-	var nums []int
-	for _, numPair := range strings.Split(input, " -> ") {
-		for _, numStr := range strings.Split(numPair, ",") {
-			num, err := strconv.ParseInt(numStr, 10, 32)
-			if err != nil {
-				panic(err.Error())
-			}
-			nums = append(nums, int(num))
-		}
-	}
-
-	return &line{
-		p1: point{nums[0], nums[1]},
-		p2: point{nums[2], nums[3]},
-	}
 }

@@ -1,6 +1,7 @@
 package advent
 
 import (
+	"github.com/davidparks11/advent2021/internal/coordinate"
 	"strconv"
 	"strings"
 )
@@ -135,12 +136,12 @@ func (t *transparentOrigami) countPoints(input []string) int {
 	points, folds := t.parseInput(input)
 	fold := folds[0]
 	for p, _ := range points {
-		if fold.x != 0 && fold.x < p.x {
-			points[point{x: fold.x - (p.x - fold.x), y: p.y}] = struct{}{}
+		if fold.X != 0 && fold.X < p.X {
+			points[coordinate.Point{X: fold.X - (p.X - fold.X), Y: p.Y}] = struct{}{}
 			delete(points, p)
 		}
-		if fold.y != 0 && fold.y < p.y {
-			points[point{x: p.x, y: fold.y - (p.y - fold.y)}] = struct{}{}
+		if fold.Y != 0 && fold.Y < p.Y {
+			points[coordinate.Point{X: p.X, Y: fold.Y - (p.Y - fold.Y)}] = struct{}{}
 			delete(points, p)
 		}
 	}
@@ -157,12 +158,12 @@ func (t *transparentOrigami) renderText(input []string) string {
 	points, folds := t.parseInput(input)
 	for _, f := range folds {
 		for p, _ := range points {
-			if f.x != 0 && f.x < p.x {
-				points[point{x: f.x - (p.x - f.x), y: p.y}] = struct{}{}
+			if f.X != 0 && f.X < p.X {
+				points[coordinate.Point{X: f.X - (p.X - f.X), Y: p.Y}] = struct{}{}
 				delete(points, p)
 			}
-			if f.y != 0 && f.y < p.y {
-				points[point{x: p.x, y: f.y - (p.y - f.y)}] = struct{}{}
+			if f.Y != 0 && f.Y < p.Y {
+				points[coordinate.Point{X: p.X, Y: f.Y - (p.Y - f.Y)}] = struct{}{}
 				delete(points, p)
 			}
 		}
@@ -171,15 +172,15 @@ func (t *transparentOrigami) renderText(input []string) string {
 	return t.renderLetters(points)
 }
 
-func (t *transparentOrigami) renderLetters(points map[point]struct{}) string {
+func (t *transparentOrigami) renderLetters(points map[coordinate.Point]struct{}) string {
 	var width int
 	var length int
 	for p, _ := range points {
-		if p.x+1 > width {
-			width = p.x + 1
+		if p.X+1 > width {
+			width = p.X + 1
 		}
-		if p.y+1 > length {
-			length = p.y + 1
+		if p.Y+1 > length {
+			length = p.Y + 1
 		}
 	}
 
@@ -190,7 +191,7 @@ func (t *transparentOrigami) renderLetters(points map[point]struct{}) string {
 			output += "\n"
 		}
 
-		if _, found := points[point{x: i % width, y: i / width}]; found {
+		if _, found := points[coordinate.Point{X: i % width, Y: i / width}]; found {
 			output += "█"
 		} else {
 			output += " "
@@ -201,8 +202,8 @@ func (t *transparentOrigami) renderLetters(points map[point]struct{}) string {
 	return output
 }
 
-func (t *transparentOrigami) parseInput(input []string) (points map[point]struct{}, folds []point) {
-	points = make(map[point]struct{})
+func (t *transparentOrigami) parseInput(input []string) (points map[coordinate.Point]struct{}, folds []coordinate.Point) {
+	points = make(map[coordinate.Point]struct{})
 
 	i := 0
 	for ; input[i] != ""; i++ {
@@ -215,21 +216,21 @@ func (t *transparentOrigami) parseInput(input []string) (points map[point]struct
 		if err != nil {
 			panic(err.Error())
 		}
-		points[point{x: int(x), y: int(y)}] = struct{}{}
+		points[coordinate.Point{X: int(x), Y: int(y)}] = struct{}{}
 	}
 
 	for i++; i < len(input); i++ {
 		lineStrings := strings.Split(input[i][11:], "=")
-		var p point
+		var p coordinate.Point
 		val, err := strconv.ParseInt(lineStrings[1], 10, 32)
 		if err != nil {
 			panic(err.Error())
 		}
 
 		if lineStrings[0] == "x" {
-			p = point{x: int(val)}
+			p = coordinate.Point{X: int(val)}
 		} else {
-			p = point{y: int(val)}
+			p = coordinate.Point{Y: int(val)}
 		}
 
 		folds = append(folds, p)

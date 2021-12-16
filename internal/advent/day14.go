@@ -52,7 +52,7 @@ BB -> N
 BC -> B
 CC -> N
 CN -> C
-The first line is the polymer template - this is the starting point of the process.
+The first line is the polymer template - this is the starting Point of the process.
 
 The following section defines the pair insertion rules. A rule like AB -> C means that when elements A and B are immediately adjacent, element C should be inserted between them. These insertions all happen simultaneously.
 

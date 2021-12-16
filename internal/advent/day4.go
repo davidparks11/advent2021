@@ -3,6 +3,8 @@ package advent
 import (
 	"strconv"
 	"strings"
+
+	. "github.com/davidparks11/advent2021/internal/advent/day4"
 )
 
 var _ Problem = &giantSquid{}
@@ -76,7 +78,7 @@ Finally, 24 is drawn:
 21  9 14 16  7        19  8  7 25 23        18  8 23 26 20
  6 10  3 18  5        20 11 10 24  4        22 11 13  6  5
  1 12 20 15 19        14 21 16 12  6         2  0 12  3  7
-At this point, the third board wins because it has at least one complete row or column of marked numbers (in this case, the entire top row is marked: 14 21 17 24 4).
+At this Point, the third board wins because it has at least one complete row or column of marked numbers (in this case, the entire top row is marked: 14 21 17 24 4).
 
 The score of the winning board can now be calculated. Start by finding the sum of all unmarked numbers on that board; in this case, the sum is 188. Then, multiply that sum by the number that was just called when the board won, 24, to get the final score, 188 * 24 = 4512.
 
@@ -84,11 +86,11 @@ To guarantee victory against the giant squid, figure out which board will win fi
 */
 func (g *giantSquid) winningBoardScore(input []string) int {
 	chosenNums := g.parseChosenNumbers(input[0])
-	boards := g.makeBoards(input[2:])
+	boards := MakeBoards(input[2:])
 	for i, num := range chosenNums {
 		for _, b := range boards {
-			if winner := b.mark(num); i > 4 && winner {
-				return b.score()
+			if winner := b.Mark(num); i > 4 && winner {
+				return b.Score()
 			}
 		}
 	}
@@ -100,74 +102,22 @@ On the other hand, it might be wise to try a different strategy: let the giant s
 
 You aren't sure how many bingo boards a giant squid could play at once, so rather than waste time counting its arms, the safe thing to do is to figure out which board will win last and choose that one. That way, no matter which boards it picks, it will win for sure.
 
-In the above example, the second board is the last to win, which happens after 13 is eventually called and its middle column is completely marked. If you were to keep playing until this point, the second board would have a sum of unmarked numbers equal to 148 for a final score of 148 * 13 = 1924.
+In the above example, the second board is the last to win, which happens after 13 is eventually called and its middle column is completely marked. If you were to keep playing until this Point, the second board would have a sum of unmarked numbers equal to 148 for a final score of 148 * 13 = 1924.
 
 Figure out which board will win last. Once it wins, what would its final score be?
 */
 func (g *giantSquid) lastWinningBoardScore(input []string) int {
 	chosenNums := g.parseChosenNumbers(input[0])
-	boards := g.makeBoards(input[2:])
-	var winners []*board
+	boards := MakeBoards(input[2:])
+	var winners []*Board
 	for i, num := range chosenNums {
 		for _, b := range boards {
-			if winner := b.mark(num); i > 4 && winner {
+			if winner := b.Mark(num); i > 4 && winner {
 				winners = append(winners, b)
 			}
 		}
 	}
-	return winners[len(winners)-1].score()
-}
-
-type board struct {
-	places  [25]int
-	marks   uint32
-	lastNum int
-	won     bool
-}
-
-func (b *board) mark(num int) bool {
-	if b.won {
-		return false //prevent returning a board more than once as a winner
-	}
-
-	for i, place := range b.places {
-		if place == num {
-			b.lastNum = num
-			b.marks |= (1 << i)
-			for _, mask := range winMasks {
-				if b.marks&mask == mask {
-					b.won = true
-					return true
-				}
-			}
-		}
-	}
-
-	return false
-}
-
-func (b *board) score() int {
-	unused := 0
-	for i, num := range b.places {
-		if b.marks&(1<<i) == 0 {
-			unused += num
-		}
-	}
-
-	return unused * b.lastNum
-}
-
-var winMasks = []uint32{
-	0b1111100000000000000000000, //first row
-	0b0000011111000000000000000, //second row
-	0b0000000000111110000000000, //third row
-	0b0000000000000001111100000, //fourth row
-	0b0000000000000000000011111, //fifth row
-	0b1000010000100001000010000, //first column
-	0b0100001000010000100001000, //second column
-	0b0010000100001000010000100, //third column
-	0b0001000010000100001000010, //fourth column
-	0b0000100001000010000100001, //fifth column
+	return winners[len(winners)-1].Score()
 }
 
 func (g *giantSquid) parseChosenNumbers(input string) []int {
@@ -181,29 +131,4 @@ func (g *giantSquid) parseChosenNumbers(input string) []int {
 		nums = append(nums, int(num))
 	}
 	return nums
-}
-
-func (g *giantSquid) makeBoards(input []string) []*board {
-	var boards []*board
-	for i := 0; i < len(input); i += 6 {
-		boards = append(boards, g.makeBoard(input[i:i+5]))
-	}
-	return boards
-}
-
-func (g *giantSquid) makeBoard(input []string) *board {
-	var b board
-	for i, line := range input {
-		line = strings.TrimSpace(line)
-		line = strings.ReplaceAll(line, "  ", " ")
-		numStrings := strings.Split(line, " ")
-		for j, numString := range numStrings {
-			num, err := strconv.ParseInt(numString, 10, 32)
-			if err != nil {
-				panic(err.Error())
-			}
-			b.places[i*5+j] = int(num)
-		}
-	}
-	return &b
 }

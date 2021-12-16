@@ -22,7 +22,7 @@ func (s *syntaxScoring) Solve() interface{} {
 	input := s.GetInputLines()
 	var results []int
 	results = append(results, s.syntaxErrorScore(input))
-	results = append(results, s.part2(input))
+	results = append(results, s.findMiddleScore(input))
 	return results
 }
 
@@ -165,7 +165,7 @@ Autocomplete tools are an odd bunch: the winner is found by sorting all of the s
 
 Find the completion string for each incomplete line, score the completion strings, and sort the scores. What is the middle score?
 */
-func (s *syntaxScoring) part2(input []string) int {
+func (s *syntaxScoring) findMiddleScore(input []string) int {
 	syntaxScore := func(r rune) int {
 		switch r {
 		case '(':
