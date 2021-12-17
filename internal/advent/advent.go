@@ -29,6 +29,7 @@ func NewProblemSet() *problemSet {
 		NewSmokeBasin(),
 		NewSyntaxScoring(),
 		NewDumboOctopus(),
+		NewPassagePathing(),
 		NewTransparentOrigami(),
 		NewExtendedPolymerization(),
 		NewChiton(),
