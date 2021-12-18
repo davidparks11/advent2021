@@ -33,6 +33,7 @@ func NewProblemSet() *problemSet {
 		NewTransparentOrigami(),
 		NewExtendedPolymerization(),
 		NewChiton(),
+		NewPacketDecoder(),
 	}
 
 	p := make(problemSet)
