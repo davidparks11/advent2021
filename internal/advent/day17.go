@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"strings"
 
+	. "github.com/davidparks11/advent2021/internal/advent/day17"
 	"github.com/davidparks11/advent2021/internal/coordinate"
 	adventMath "github.com/davidparks11/advent2021/internal/math"
 )
@@ -178,28 +179,28 @@ func (t *trickShot) totalHits(input []string) int {
 	return hits
 }
 
-func (t *trickShot) possibleVelocities(a *area) (velocities []coordinate.Point) {
-	xMax := a.xMax
-	yMax := -a.yMin
-	yMin := a.yMin
-	
+func (t *trickShot) possibleVelocities(a *Area) (velocities []coordinate.Point) {
+	xMax := a.XMax
+	yMax := -a.YMin
+	yMin := a.YMin
+
 	for dx := 1; dx <= xMax; dx++ {
 		for dy := yMin; dy <= yMax; dy++ {
 			velocities = append(velocities, coordinate.Point{X: dx, Y: dy})
-		} 
+		}
 	}
 	return
 }
 
-func (t *trickShot) findGreatestY(a *area, velocity coordinate.Point) (int, bool) {
+func (t *trickShot) findGreatestY(a *Area, velocity coordinate.Point) (int, bool) {
 	point := coordinate.Point{}
 	yMax := math.MinInt
-	for !a.beyond(point) {
+	for !a.Beyond(point) {
 		if point.Y > yMax {
 			yMax = point.Y
 		}
 
-		if a.contains(point) {
+		if a.Contains(point) {
 			return yMax, true
 		}
 		t.advance(&point, &velocity)
@@ -216,7 +217,7 @@ func (t *trickShot) advance(point *coordinate.Point, velocity *coordinate.Point)
 }
 
 //target area: x=169..206, y=-108..-68
-func (t *trickShot) parseInput(input []string) *area {
+func (t *trickShot) parseInput(input []string) *Area {
 	getMinMaxFromCoords := func(coordString string) (min, max int) {
 		numStrings := strings.Split(coordString, "..")
 		var err error
@@ -239,27 +240,10 @@ func (t *trickShot) parseInput(input []string) *area {
 	coords := strings.Split(strings.Split(input[0], ": ")[1], ", ")
 	xMin, xMax := getMinMaxFromCoords(coords[0][2:])
 	yMin, yMax := getMinMaxFromCoords(coords[1][2:])
-	return &area{
-		yMin: yMin,
-		yMax: yMax,
-		xMin: xMin,
-		xMax: xMax,
+	return &Area{
+		YMin: yMin,
+		YMax: yMax,
+		XMin: xMin,
+		XMax: xMax,
 	}
-}
-
-type area struct {
-	yMin int
-	yMax int
-	xMin int
-	xMax int
-}
-
-
-//returns whether or not a point.X is greater than area.xMax or point.Y is less than area.yMin 
-func (a area) beyond(point coordinate.Point) bool {
-	return point.X > a.xMax || point.Y < a.yMin
-}
-
-func (a *area) contains(p coordinate.Point) bool {
-	return a.xMin <= p.X && p.X <= a.xMax && a.yMin <= p.Y && p.Y <= a.yMax
 }
