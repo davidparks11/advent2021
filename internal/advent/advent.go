@@ -36,6 +36,7 @@ func NewProblemSet() *problemSet {
 		NewPacketDecoder(),
 		NewTrickShot(),
 		NewSnailFish(),
+		NewBeaconScanner(),
 	}
 
 	p := make(problemSet)
