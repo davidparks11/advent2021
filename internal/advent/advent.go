@@ -39,6 +39,7 @@ func NewProblemSet() *problemSet {
 		NewBeaconScanner(),
 		NewTrenchMap(),
 		NewDiracDice(),
+		NewReactorReboot(),
 	}
 
 	p := make(problemSet)
