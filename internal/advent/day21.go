@@ -20,12 +20,12 @@ func NewDiracDice() Problem {
 func (d *diracDice) Solve() interface{} {
     input := d.GetInputLines()
     var results []int
-    results = append(results, d.part1(input))
-    results = append(results, d.part2(input))
+    results = append(results, d.dieGame(input))
+    results = append(results, d.quantumDieGame(input))
     return results
 }
 
-func (d *diracDice) part1(input []string) int {
+func (d *diracDice) dieGame(input []string) int {
     p1, p2 := ParseInput(input)
     regularDie := NewDie(100)
     var loser *Player
@@ -45,7 +45,7 @@ func (d *diracDice) part1(input []string) int {
     return loser.Score * regularDie.TimesRolled
 }
 
-func (d *diracDice) part2(input []string) int {
+func (d *diracDice) quantumDieGame(input []string) int {
     p1, p2 := ParseInput(input)
     return math.Max(QuantumDiceGame(0, 0, p1.Pos, p2.Pos)) 
 }
