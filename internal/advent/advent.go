@@ -40,6 +40,7 @@ func NewProblemSet() *problemSet {
 		NewTrenchMap(),
 		NewDiracDice(),
 		NewReactorReboot(),
+		NewAmphipodProb(),
 		NewSeaCumber(),
 	}
 
