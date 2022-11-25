@@ -41,6 +41,7 @@ func NewProblemSet() *problemSet {
 		NewDiracDice(),
 		NewReactorReboot(),
 		NewAmphipodProb(),
+		NewArithmeticLogicUnit(),
 		NewSeaCumber(),
 	}
 
